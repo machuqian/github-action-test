@@ -1,0 +1,16 @@
+name: docker image build and push
+on: [push]
+jobs:
+  docker-build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: docker image build
+        run: docker build -f Dockerfile_v2 -t chuqian/webserver:latest .
+      - name: list docker image
+        run: docker image ls
+      - name: dockerhub login
+        run: docker login -u  ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: push to dockerhub
+        run: docker image push chuqian/webserver:latest
