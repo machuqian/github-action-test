@@ -4,13 +4,35 @@ jobs:
   docker-build-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
+      -
+        name: Check out repository code
         uses: actions/checkout@v2
-      - name: docker image build
-        run: docker build -f Dockerfile_v2 -t chuqian/webserver:latest .
-      - name: list docker image
-        run: docker image ls
-      - name: dockerhub login
-        run: docker login -u  ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-      - name: push to dockerhub
-        run: docker image push chuqian/webserver:latest
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+      _
+        name: build and push
+        run: /
+         docker login -u  ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+         docker buildx ls
+         docker buildx build --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t chuqian/webserver:latest .
+
+#      -
+#        name: docker image build
+#        run: docker build -f Dockerfile_v2 -t chuqian/webserver:latest .
+#      -
+#        name: list docker image
+#        run: docker image ls
+#      -
+#        name: dockerhub login
+#        run: docker login -u  ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+#      -
+#        name: push to dockerhub
+#        run: docker image push chuqian/webserver:latest
