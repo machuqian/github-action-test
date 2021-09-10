@@ -19,7 +19,7 @@ jobs:
         run: echo ${{ steps.buildx.outputs.platforms }}
       _
         name: build and push
-        run: /
+        run:
          docker login -u  ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
          docker buildx ls
          docker buildx build --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t chuqian/webserver:latest .
