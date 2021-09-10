@@ -26,7 +26,7 @@ jobs:
         run: docker buildx ls
       -
         name: Build and push
-        run: docker buildx build --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t chuqian/webserver:latest .
+        run: docker buildx build -f Dockerfile_v2 --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t chuqian/webserver:latest .
 
 
 
