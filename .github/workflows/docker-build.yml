@@ -17,12 +17,15 @@ jobs:
       -
         name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
+      -
+        name: dockerhub login
+        run: docker login -u  ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: buildx ls
+        run:  buildx ls
       _
-        name: build and push
-        run:
-         docker login -u  ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
-         docker buildx ls
-         docker buildx build --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t chuqian/webserver:latest .
+        name: Build and push
+        run: docker buildx build --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t chuqian/webserver:latest .
 
 #      -
 #        name: docker image build
