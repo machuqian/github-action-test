@@ -23,7 +23,7 @@ jobs:
 
       -
         name: buildx ls
-        run:  buildx ls
+        run: docker buildx ls
       -
         name: Build and push
         run: docker buildx build --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t chuqian/webserver:latest .
