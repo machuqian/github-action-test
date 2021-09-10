@@ -17,19 +17,36 @@ jobs:
       -
         name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
-      -
-        name: dockerhub login
-        run: docker login -u  ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      -
-        name: buildx ls
-        run: docker buildx ls
-      -
-        name: Build and push
-        run: docker buildx build -f Dockerfile_v2 --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t chuqian/webserver:latest .
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username:  ${{ secrets.DOCKER_HUB_USERNAME }}
+          password:  ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile_v2
+          platforms: linux/arm/v7,linux/arm64/v8,linux/amd64
+          push: true
+          tags: chuqian/webserver:latest
+
+#v2
+#      -
+#        name: dockerhub login
+#        run: docker login -u  ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+#
+#      -
+#        name: buildx ls
+#        run: docker buildx ls
+#      -
+#        name: Build and push
+#        run: docker buildx build -f Dockerfile_v2 --push --platform linux/arm/v7,linux/arm64/v8,linux/amd64 -t chuqian/webserver:latest .
 
 
-
+#v1
 #      -
 #        name: docker image build
 #        run: docker build -f Dockerfile_v2 -t chuqian/webserver:latest .
